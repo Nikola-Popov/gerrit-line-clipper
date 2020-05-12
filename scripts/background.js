@@ -11,10 +11,6 @@ function isMavenStructured(path) {
 }
 
 function toIDEPathIfNeccessary(path) {
-    if (!path.endsWith(javaSuffix)) {
-        return path;
-    }
-
     let idePath = path;
     idePath = idePath.trim();
     if (isMavenStructured(idePath)) {
@@ -33,8 +29,12 @@ function toIDEPathIfNeccessary(path) {
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         const lineNumber = request.lineNumber;
-        const file = toIDEPathIfNeccessary(request.file);
+        const file = request.file;
 
-        sendResponse({ message: `${file}:${lineNumber}` });
+        if (file.endsWith(javaSuffix)) {
+            sendResponse({ message: `${toIDEPathIfNeccessary(file)}:${lineNumber}` });
+        } else {
+            sendResponse({ message: `${file}` });
+        }
     }
 );
