@@ -40,18 +40,18 @@ const lineSelectCallback = async (mutationsList, observer) => {
 };
 
 const observer = new MutationObserver(lineSelectCallback);
-const registerLineObserver = async () => {
+const lineObserverCallback = async () => {
   const diffTableChild = await elementReady("#diffTable > tbody:nth-child(2)");
   const diffTableRows = diffTableChild.parentNode.tBodies;
   for (let row of diffTableRows) {
     observer.observe(row, { attributes: true, subtree: true });
   }
 };
-registerLineObserver();
+lineObserverCallback();
 
 new MutationObserver(() => {
   observer.disconnect();
-  registerLineObserver();
+  lineObserverCallback();
 }).observe(document.body, { subtree: true, childList: true });
 
 /**
@@ -80,4 +80,3 @@ function elementReady(selector) {
       });
   });
 }
-
