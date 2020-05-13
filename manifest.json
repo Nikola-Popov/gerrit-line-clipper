@@ -16,6 +16,9 @@
                 "default_popup": "static/popup.html",
                 "default_title": "Gerrit line clipboard"
         },
+        "permissions": [
+                "storage"
+        ],
         "content_scripts": [
                 {
                         "matches": [

@@ -12,7 +12,6 @@ const isMavenStructured = (path) => {
 
 const removeJavaSuffix = (path) => {
     return path.substring(0, path.lastIndexOf(javaSuffix));
-
 }
 
 const toFullPath = (path) => {
