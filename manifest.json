@@ -8,6 +8,7 @@
         ],
         "background": {
                 "scripts": [
+                        "scripts/paths.js",
                         "scripts/background.js"
                 ]
         },
