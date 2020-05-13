@@ -21,12 +21,10 @@
                                 "<all_urls>"
                         ],
                         "js": [
-                                "vendor/bootstrap.min.js",
                                 "vendor/buttons.js",
+                                "scripts/utils.js",
+                                "scripts/settings.js",
                                 "scripts/clipper.js"
-                        ],
-                        "css": [
-                                "vendor/bootstrap.min.css"
                         ]
                 }
         ]

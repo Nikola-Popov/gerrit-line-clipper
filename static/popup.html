@@ -5,41 +5,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerrit Line Clipper</title>
-    <link href="../vendor/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <script src="../vendor/jquery.min.js"></script>
-    <script src="../vendor/bootstrap.min.js"></script>
     <script src="../vendor/buttons.js"></script>
+    <script src="../scripts/utils.js"></script>
     <script src="../scripts/settings.js"></script>
 </head>
 
 <body style="width: 200px;">
-    <div class="jumbotron">
-        <h4>Settings</h4>
-    </div>
-
-    <div class="container">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Configure by your needs</h5>
-                <p class="card-text">Full paths or class names only.
-                    By default line numbers are clipped as well.</p>
-                <div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="pathsSwitch">
-                    <label class="custom-control-label" for="pathsSwitch">Full paths</label>
-                </div>
-                <br />
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="lineNumbersCheck" checked>
-                    <label class="form-check-label" for="lineNumbersCheck">
-                        Line numbers
-                    </label>
-                </div>
-            </div>
-        </div>
+    <div style="text-align: center;">
+        <h1>Settings</h1>
     </div>
     <hr />
-    <div class="text-center">
-        <h6>Support the project</h6>
+    <div>
+        <p><i>Copy full file paths. Disabling this will copy only the class names.</i></p>
+        <div>
+            <input type="checkbox" id="pathsCheckbox" checked>
+            <label for="pathsCheckbox">Full paths</label>
+        </div>
+        <br />
+        <p><i>When selected, line numbers will be copied and appended to the selection as well.</i></p>
+        <div>
+            <input type="checkbox" id="lineNumbersCheckbox">
+            <label for="lineNumbersCheckbox">
+                Line numbers
+            </label>
+        </div>
+    </div>
+    </div>
+    <hr />
+    <div style="text-align: center;">
+        <h4>Support the project</h4>
         <a class="github-button" href="https://github.com/Nikola-Popov/gerrit-line-clipper"
             data-color-scheme="no-preference: dark; light: light; dark: dark;" data-icon="octicon-star"
             data-show-count="true" aria-label="Star Nikola-Popov/gerrit-line-clipper on GitHub">Star</a>
