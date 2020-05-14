@@ -13,19 +13,7 @@ const tickLine = (cells, sideClassSelector) => {
   }
 };
 
-const onMessageReceiveCopyClipboard = async (response) => {
-  try {
-    await navigator.clipboard.writeText(response.message);
-  } catch (err) {
-    console.error('Failed to copy: ', err);
-  }
-};
-
-const fetchFilePath = () => {
-  return document.querySelector("#triggerText").innerText;
-};
-
-const lineSelectCallback = async (mutationsList, observer) => {
+const onLineSelect = (mutationsList, observer) => {
   for (let mutation of mutationsList) {
     if (mutation.type === "attributes" && mutation.attributeName === "class") {
       const selectedTableRow = mutation.target;
@@ -33,23 +21,45 @@ const lineSelectCallback = async (mutationsList, observer) => {
       selectedTableRow.classList.contains("target-side-right") ? tickLine(cells, "right") : tickLine(cells, "left");
 
       const lineNumber = selectedTableRow.cells.item(0).attributes["data-line-number"].value;
-      const file = fetchFilePath();
-      chrome.runtime.sendMessage({ lineNumber, file }, onMessageReceiveCopyClipboard);
+      const file = document.querySelector("#triggerText").innerText;
+
+      copyBasedOnSettings(lineNumber, file);
     }
   }
 };
 
-const observer = new MutationObserver(lineSelectCallback);
-const lineObserverCallback = async () => {
+const observer = new MutationObserver(onLineSelect);
+const observeLines = async () => {
   const diffTableChild = await elementReady("#diffTable > tbody:nth-child(2)");
   const diffTableRows = diffTableChild.parentNode.tBodies;
   for (let row of diffTableRows) {
     observer.observe(row, { attributes: true, subtree: true });
   }
 };
-lineObserverCallback();
+observeLines();
 
 new MutationObserver(() => {
   observer.disconnect();
-  lineObserverCallback();
+  observeLines();
 }).observe(document.body, { subtree: true, childList: true });
+
+const dynamicSettings = settings;
+
+chrome.runtime.onMessage.addListener(
+  function (request) {
+    const [setting] = Object.keys(request);
+    dynamicSettings[setting] = request[setting].newValue;
+  }
+);
+
+function copyBasedOnSettings(lineNumber, file) {
+  if (!isJavaPath(file)) {
+    copyToClipboard(file);
+    return;
+  }
+
+  let path = dynamicSettings.FILE_PATH.checked ? toFullPath(file) : toClassPath(file);
+  path = dynamicSettings.LINE_NUMBER.checked ? `${path}:${lineNumber}` : path;
+
+  copyToClipboard(path);
+}

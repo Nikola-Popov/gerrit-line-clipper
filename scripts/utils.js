@@ -1,3 +1,15 @@
+'use strict';
+
+Object.filter = (obj, predicate) =>
+    Object.fromEntries(Object.entries(obj).filter(predicate));
+
+const copyToClipboard = async (text) => {
+    try {
+        await navigator.clipboard.writeText(text);
+    } catch (err) {
+        console.error('Failed to copy: ', err);
+    }
+};
 
 /**
  * MIT Licensed

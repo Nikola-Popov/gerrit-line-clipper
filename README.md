@@ -12,7 +12,3 @@ In order to make the scripts run only in your gerrit, change <all_urls> in the [
 ```javascript
 "matches": [ "<all_urls>" ]
 ```
-#### Future plans and improvements
-Options menu that toggles between copy modes. Such modes are:
-- filename + line number: e.g com.dev.MyClass:1234 (Currently this is the default behaviour)
-- only filename:  e.g com.dev.MyClass

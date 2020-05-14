@@ -8,7 +8,6 @@
         ],
         "background": {
                 "scripts": [
-                        "scripts/paths.js",
                         "scripts/background.js"
                 ]
         },
@@ -17,7 +16,8 @@
                 "default_title": "Gerrit line clipboard"
         },
         "permissions": [
-                "storage"
+                "storage",
+                "tabs"
         ],
         "content_scripts": [
                 {
@@ -27,6 +27,7 @@
                         "js": [
                                 "vendor/buttons.js",
                                 "scripts/utils.js",
+                                "scripts/paths.js",
                                 "scripts/settings.js",
                                 "scripts/clipper.js"
                         ]

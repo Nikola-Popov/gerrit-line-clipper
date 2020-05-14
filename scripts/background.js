@@ -1,14 +1,7 @@
 'use strict';
 
-chrome.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        const lineNumber = request.lineNumber;
-        const file = request.file;
-
-        if (file.endsWith(javaSuffix)) {
-            sendResponse({ message: `${toFullPath(file)}:${lineNumber}` });
-        } else {
-            sendResponse({ message: `${file}` });
-        }
-    }
-);
+chrome.storage.onChanged.addListener((changes) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        chrome.tabs.sendMessage(tabs[0].id, changes);
+    });
+});

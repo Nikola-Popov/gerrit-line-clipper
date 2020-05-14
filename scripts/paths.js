@@ -6,12 +6,16 @@ const sourcePattern = "src/";
 const sapCorePreffixPattern = "com/sap/core";
 const forwardSlashPattern = /\//g;
 
-const isMavenStructured = (path) => {
+function isMavenStructured(path) {
     return path.search(mavenFileStructurePattern) !== -1;
 }
 
-const removeJavaSuffix = (path) => {
+function removeJavaSuffix(path) {
     return path.substring(0, path.lastIndexOf(javaSuffix));
+}
+
+const isJavaPath = (path) => {
+    return path.endsWith(javaSuffix);
 }
 
 const toFullPath = (path) => {
