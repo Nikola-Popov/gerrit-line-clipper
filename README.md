@@ -12,14 +12,14 @@ The following table contains the most suitable cases for use of the extension. A
 | ACTION |  COMMAND | SUGGESTED USAGE                    |  NOTES |
 | -------------|---------| --------------------------------- |-------------|
 | Open Type| <kbd>command</kbd> + <kbd>shift</kbd> + <kbd>t</kbd> |`CLASS PATHS ONLY` | N/A |
-| Open Resource | <kbd>command</kbd> + <kbd>shift</kbd> + <kbd>r</kbd> |`FULL FILE PATHS` |All non Java files are selected with full paths by default. Cannot<br/>  be changed currently|
+| Open Resource | <kbd>command</kbd> + <kbd>shift</kbd> + <kbd>r</kbd> |`FULL FILE PATHS` |All non Java files are selected with full paths by default. Cannot be changed currently|
 | Open from Clipboard | <kbd>command</kbd> + <kbd>shift</kbd> + <kbd>v</kbd> |`FULL FILE PATHS:LINE NUMBERS` |Eclipse issue - Not working when there is no currently opened tab |
 <br/>
-## Settings management
 
+## Settings management
 | SETTINGS |  OPTIONS |DESCRIPTION                    |  EXAMPLES |
-| -------------|---------| ------------------------------ |-------------|
-| File paths | - Full paths <br/> - Class paths      |Toggles between full file paths or class paths copying. Applicable only for Java files.<br/> Regular files are always selected as full paths. | - com.dev.package.MyClass <br/> - MyClass|
+| -------------|-------------| ------------------------- |-------------|
+| File paths | - Full paths <br/> - Class paths      |Toggles between full file paths or class paths copying. Applicable only for Java files.<br/> Regular files are always selected as full paths. | - com.package.MyClass <br/> - MyClass|
 | Line numbers | - Enabled <br/> - Disabled | When selected, line numbers will be copied and appended to the clipboard as well.<br/> Applies only for Java files.| - :12345|
 
 ---
