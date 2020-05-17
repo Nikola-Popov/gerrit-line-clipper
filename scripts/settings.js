@@ -5,19 +5,21 @@ const settings = {
     LINE_NUMBER: { id: "lineNumbersCheckbox", checked: false }
 };
 
-(() => {
-    document.addEventListener("DOMContentLoaded", () => {
-        chrome.storage.local.get(Object.keys(settings), (loadedSettings) => {
-            Object.values(loadedSettings).forEach((value) => {
-                document.getElementById(value.id).checked = value.checked;
-            });
-        });
+const settingsKeys = Object.keys(settings);
+
+function modifyPopupCheckboxes(loadedSettings) {
+    Object.values(loadedSettings).forEach((value) => {
+        document.getElementById(value.id).checked = value.checked;
     });
-})();
+};
 
 function findSettingsById(id) {
     return Object.filter(settings, ([key, value]) => value.id === id);
 };
+
+const loadSettings = ((keys, callback) => {
+    chrome.storage.local.get(keys, callback);
+});
 
 const saveSettings = (event) => {
     const checkboxSettings = findSettingsById(event.target.id);
@@ -35,3 +37,9 @@ const handleSettingsChange = async (checkboxSelector) => {
 
 handleSettingsChange(`#${settings.FILE_PATH.id}`);
 handleSettingsChange(`#${settings.LINE_NUMBER.id}`);
+
+(() => {
+    document.addEventListener("DOMContentLoaded", () => {
+        loadSettings(settingsKeys, modifyPopupCheckboxes);
+    });
+})();

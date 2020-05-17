@@ -13,6 +13,24 @@ const tickLine = (cells, sideClassSelector) => {
   }
 };
 
+const fetchFilePath = () => {
+  const expandableList = document.querySelector("#container");
+  if (expandableList) {
+    for (let list of expandableList.children) {
+      for (let row of list.children) {
+        if (row.classList.contains("expanded")) {
+          return row.attributes["data-path"].value;
+        }
+      }
+    }
+  } else {
+    const diffViewTitle = document.querySelector("#triggerText");
+    if (diffViewTitle) {
+      return diffViewTitle.innerText;
+    }
+  }
+};
+
 const onLineSelect = (mutationsList, observer) => {
   for (let mutation of mutationsList) {
     if (mutation.type === "attributes" && mutation.attributeName === "class") {
@@ -21,8 +39,7 @@ const onLineSelect = (mutationsList, observer) => {
       selectedTableRow.classList.contains("target-side-right") ? tickLine(cells, "right") : tickLine(cells, "left");
 
       const lineNumber = selectedTableRow.cells.item(0).attributes["data-line-number"].value;
-      const file = document.querySelector("#triggerText").innerText;
-
+      const file = fetchFilePath();
       copyBasedOnSettings(lineNumber, file);
     }
   }
@@ -30,8 +47,9 @@ const onLineSelect = (mutationsList, observer) => {
 
 const observer = new MutationObserver(onLineSelect);
 const observeLines = async () => {
-  const diffTableChild = await elementReady("#diffTable > tbody:nth-child(2)");
-  const diffTableRows = diffTableChild.parentNode.tBodies;
+  const diffTableChild = await elementReady("#diffTable");
+  const diffTableRows = diffTableChild.tBodies;
+
   for (let row of diffTableRows) {
     observer.observe(row, { attributes: true, subtree: true });
   }
@@ -43,7 +61,10 @@ new MutationObserver(() => {
   observeLines();
 }).observe(document.body, { subtree: true, childList: true });
 
-const dynamicSettings = settings;
+let dynamicSettings;
+loadSettings(settingsKeys, (loadedSettings) => {
+  dynamicSettings = loadedSettings;
+});
 
 chrome.runtime.onMessage.addListener(
   function (request) {
