@@ -1,13 +1,13 @@
 'use strict';
 
 const settings = {
-    FILE_PATH: { id: "pathsCheckbox", checked: true },
-    LINE_NUMBER: { id: "lineNumbersCheckbox", checked: false }
+    FILE_PATH: { id: "pathsSettings", checked: true },
+    LINE_NUMBER: { id: "lineNumbersSettings", checked: false }
 };
 
 const settingsKeys = Object.keys(settings);
 
-function modifyPopupCheckboxes(loadedSettings) {
+function slideSwitches(loadedSettings) {
     Object.values(loadedSettings).forEach((value) => {
         document.getElementById(value.id).checked = value.checked;
     });
@@ -22,24 +22,29 @@ const loadSettings = ((keys, callback) => {
 });
 
 const saveSettings = (event) => {
-    const checkboxSettings = findSettingsById(event.target.id);
-    Object.values(checkboxSettings)[0].checked = event.target.checked;
+    const switchEvent = event[0];
+    const switchSettings = findSettingsById(switchEvent.id);
+    Object.values(switchSettings)[0].checked = switchEvent.checked;
 
-    chrome.storage.local.set(checkboxSettings, () => {
-        console.log("Successfully stored settings: ", checkboxSettings);
+    chrome.storage.local.set(switchSettings, () => {
+        console.log("Successfully stored settings: ", switchSettings);
     });
 };
 
-const handleSettingsChange = async (checkboxSelector) => {
-    const checkbox = await elementReady(checkboxSelector);
-    checkbox.addEventListener('change', saveSettings);
+const handleSettingsChange = async (switchSelector) => {
+    const selectedSwitch = await elementReady(switchSelector);
+    $(function () {
+        $(selectedSwitch).change(function () {
+            saveSettings($(this));
+        })
+    });
 };
 
 handleSettingsChange(`#${settings.FILE_PATH.id}`);
 handleSettingsChange(`#${settings.LINE_NUMBER.id}`);
 
-(() => {
+(async () => {
     document.addEventListener("DOMContentLoaded", () => {
-        loadSettings(settingsKeys, modifyPopupCheckboxes);
+        loadSettings(settingsKeys, slideSwitches);
     });
 })();

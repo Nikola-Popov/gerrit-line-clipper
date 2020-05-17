@@ -25,7 +25,6 @@
                                 "<all_urls>"
                         ],
                         "js": [
-                                "vendor/buttons.js",
                                 "scripts/utils.js",
                                 "scripts/paths.js",
                                 "scripts/settings.js",

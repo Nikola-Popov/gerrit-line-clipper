@@ -5,36 +5,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerrit Line Clipper</title>
-    <script src="../vendor/buttons.js"></script>
+
+    <link href="../vendor/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendor/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <link href="../css/styles.css" rel="stylesheet">
+
     <script src="../scripts/utils.js"></script>
     <script src="../scripts/settings.js"></script>
+    <script src="../vendor/js/jquery.min.js"></script>
+    <script src="../vendor/js/bootstrap.min.js"></script>
+    <script src="../vendor/js/bootstrap4-toggle.min.js"></script>
+    <script src="../vendor/js/buttons.js"></script>
+  
 </head>
 
-<body style="width: 200px;">
-    <div style="text-align: center;">
-        <h1>Settings</h1>
+<body>
+    <div class="bg-dark p-3">
+        <h5 class="text-white h4">Gerrit Line Clipper</h5>
+        <span class="text-muted">Settings management.</span>
     </div>
-    <hr />
+    <div class="card">
+        <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">File paths</h6>
+            <p class="card-text">Toggles between full file paths or class paths copying. Applicable only for Java files.
+                Regular files are always selected as full paths.</p>
+        </div>
+        <div class="card-footer">
+            <div class="text-center">
+                <input id="pathsSettings" type="checkbox" checked data-toggle="toggle" data-on="Full paths"
+                    data-off="Class paths" data-onstyle="success" data-offstyle="primary" data-height="1"
+                    data-width="200">
+            </div>
+        </div>
+    </div>
+
     <div>
-        <p><i>Whether to copy full file paths. Disabling this will copy only the class names.</i></p>
-        <div>
-            <input type="checkbox" id="pathsCheckbox" checked>
-            <label for="pathsCheckbox"><b>Full paths</b></label>
+        <div class="card">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Line numbers</h6>
+                <p class="card-text">When selected, line numbers will be copied and appended to the clipboard as
+                    well. Applies only for Java files.</p>
+            </div>
+            <div class="card-footer">
+                <div class="text-center">
+                    <input id="lineNumbersSettings" type="checkbox" data-toggle="toggle" data-on="Enabled"
+                        data-off="Disabled" data-onstyle="success" data-offstyle="secondary" data-height="1"
+                        data-width="200">
+                </div>
+            </div>
+            <div>
+            </div>
         </div>
-        <br />
-        <p><i>When selected, line numbers will be copied and appended to the selection as well.</i></p>
-        <div>
-            <input type="checkbox" id="lineNumbersCheckbox">
-            <label for="lineNumbersCheckbox">
-                <b>Line numbers</b>
-            </label>
-        </div>
-    </div>
     </div>
     <br />
-    <hr />
-    <div style="text-align: center;">
-        <h4>Support the project</h4>
+    <div class="text-center">
         <a class="github-button" href="https://github.com/Nikola-Popov/gerrit-line-clipper"
             data-color-scheme="no-preference: dark; light: light; dark: dark;" data-icon="octicon-star"
             data-show-count="true" aria-label="Star Nikola-Popov/gerrit-line-clipper on GitHub">Star</a>
