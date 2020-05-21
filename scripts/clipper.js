@@ -4,30 +4,36 @@ const tickImage = new Image(12, 12);
 tickImage.src = chrome.extension.getURL("/images/tick.png");
 tickImage.title = "Copied";
 
-const tickLine = (cells, sideClassSelector) => {
+const tickLine = (cell) => {
+  cell.appendChild(tickImage);
+};
+
+const findCellBySide = (cells, sideClassSelector) => {
   for (let i = 0; i < cells.length; i++) {
     let currentCell = cells.item(i);
     if (currentCell.classList.contains("lineNum") && currentCell.classList.contains(sideClassSelector)) {
-      currentCell.appendChild(tickImage);
+      return currentCell;
     }
   }
 };
 
-const fetchFilePath = () => {
+const fetchLineNumber = (cell) => {
+  const lineNumber = cell.innerText;
+  if (!lineNumber) {
+    lineNumber = cell.attributes["data-line-number"].value;
+  }
+  return lineNumber;
+};
+
+const fetchFilePath = (selectedTableRow) => {
   const expandableList = document.querySelector("#container");
   if (expandableList) {
-    for (let list of expandableList.children) {
-      for (let row of list.children) {
-        if (row.classList.contains("expanded")) {
-          return row.attributes["data-path"].value;
-        }
-      }
+    while (selectedTableRow.classList.value !== "stickyArea style-scope gr-file-list") {
+      selectedTableRow = selectedTableRow.parentElement;
     }
+    return selectedTableRow.querySelector("div").attributes["data-path"].value;
   } else {
-    const diffViewTitle = document.querySelector("#triggerText");
-    if (diffViewTitle) {
-      return diffViewTitle.innerText;
-    }
+    return document.querySelector("#triggerText").innerText;
   }
 };
 
@@ -36,28 +42,34 @@ const onLineSelect = (mutationsList, observer) => {
     if (mutation.type === "attributes" && mutation.attributeName === "class") {
       const selectedTableRow = mutation.target;
       const cells = selectedTableRow.cells;
-      selectedTableRow.classList.contains("target-side-right") ? tickLine(cells, "right") : tickLine(cells, "left");
+      if (!cells) {
+        return;
+      }
+      const cell = selectedTableRow.classList.contains("target-side-right") ? findCellBySide(cells, "right") : findCellBySide(cells, "left");
+      if(!cell) {
+        return;
+      }
+      tickLine(cell);
 
-      const lineNumber = selectedTableRow.cells.item(0).attributes["data-line-number"].value;
-      const file = fetchFilePath();
+      const lineNumber = fetchLineNumber(cell);
+      const file = fetchFilePath(selectedTableRow);
       copyBasedOnSettings(lineNumber, file);
     }
   }
 };
 
 const observer = new MutationObserver(onLineSelect);
-const observeLines = async () => {
-  const diffTableChild = await elementReady("#diffTable");
-  const diffTableRows = diffTableChild.tBodies;
-
-  for (let row of diffTableRows) {
-    observer.observe(row, { attributes: true, subtree: true });
+const observeLines = () => {
+  const diffTables = document.querySelectorAll("#diffTable");
+  for (let diffTable of diffTables) {
+    const diffTableRows = diffTable.tBodies;
+    for (let row of diffTableRows) {
+      observer.observe(row, { attributes: true, subtree: true });
+    }
   }
 };
-observeLines();
 
 new MutationObserver(() => {
-  observer.disconnect();
   observeLines();
 }).observe(document.body, { subtree: true, childList: true });
 
