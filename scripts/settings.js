@@ -21,6 +21,18 @@ const loadSettings = ((keys, callback) => {
     chrome.storage.local.get(keys, callback);
 });
 
+const loadSettingsOrDefault = () => {
+    const loadedSettings = loadSettings(settingsKeys, (loadedSettings) => {
+        return loadedSettings;
+    });
+
+    if (loadedSettings) {
+        return loadedSettings;
+    }
+
+    return settings;
+};
+
 const saveSettings = (event) => {
     const switchEvent = event[0];
     const switchSettings = findSettingsById(switchEvent.id);

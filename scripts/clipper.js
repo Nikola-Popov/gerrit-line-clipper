@@ -46,7 +46,7 @@ const onLineSelect = (mutationsList, observer) => {
         return;
       }
       const cell = selectedTableRow.classList.contains("target-side-right") ? findCellBySide(cells, "right") : findCellBySide(cells, "left");
-      if(!cell) {
+      if (!cell) {
         return;
       }
       tickLine(cell);
@@ -73,10 +73,7 @@ new MutationObserver(() => {
   observeLines();
 }).observe(document.body, { subtree: true, childList: true });
 
-let dynamicSettings;
-loadSettings(settingsKeys, (loadedSettings) => {
-  dynamicSettings = loadedSettings;
-});
+let dynamicSettings = loadSettingsOrDefault();
 
 chrome.runtime.onMessage.addListener(
   function (request) {
